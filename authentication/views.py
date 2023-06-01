@@ -3678,6 +3678,7 @@ def clear_table(request):
             cursor.execute(f"delete from TBL_FIXED_DEDUCTIONS where empno = {empno}")
             cursor.execute(f"delete from TBL_HELPER where helperempno = {empno}")
             cursor.execute(f"delete from TBL_OTHER_EARNINGS where empno = {empno}")
+            cursor.execute(f"delete from TBL_VTR where driverempno = {empno}")
             
     
     return render(request, 'clear_table.html')
