@@ -1,0 +1,48 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}VTR{% endblock title %}
+{% block link %} 
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style10.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- JQuery Core JavaScript -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <title>ATTENDANCE</title>
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+{% block content1 %}
+<div class="center">
+    <form action="/attendance" method = "post" id="form_submit">
+    {% csrf_token %}
+    <h1>Select Period</h1>
+        <div class="inputbox">
+            <select class="select" name="dept" id="dept" onchange="selectdept()">
+                <option value="OFFICE STAFF">OFFICE STAFF</option>
+                <option value="MAINTENANCE">MAINTENANCE</option>
+            </select>
+        </div>
+        <div class="inputbox">
+            <select class="select" name="period" id="period">
+                {% for period in period %}
+                    <option value="{{period.11}}">{{period.11}}</option>
+                {% endfor %}
+            </select>
+        </div>
+      <div class="inputbox">
+        <input type="submit" value="Input Attendance">
+      </div>
+    </form>
+    
+  </div>
+  <script type = "text/javascript" src="{% static '/js/script12.js' %}"></script> 
+{% endblock content1 %}

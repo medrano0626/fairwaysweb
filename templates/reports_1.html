@@ -1,0 +1,75 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}REPORTS{% endblock title %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style14.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+
+{% block content1 %}
+<div class="center">
+    <form action="/reports_1" method = "post" id="form_submit" autocomplete="off">
+    {% csrf_token %}
+    <h1>Trips/Attendance</h1>
+        <div class="inputbox">
+            <select class="select" name="emptype" id="emptype">
+                <option value="EMPTY">EMPLOYEE TYPE</option>
+                <option value="OFFICE STAFF">OFFICE STAFF</option>
+                <option value="MAINTENANCE">MAINTENANCE</option>
+                <option value="DRIVER">DRIVER</option>
+                <option value="HELPER">HELPER</option>
+            </select>
+        </div>
+        <div class="inputbox">
+            <input type="date" id="datefrom" name="datefrom" required="required">
+            <!-- <span>Last Name</span> -->
+        </div>
+        <div class="inputbox">
+            <input type="date" id="dateto" name="dateto" required="required">
+            <!-- <span>Last Name</span> -->
+        </div>
+        <!-- <div class="inputbox">
+            <select class="select" name="period" id="period">
+                <option value="EMPTY">PERIOD</option>
+            </select>
+        </div>
+        
+        <div class="inputbox">
+            <select class="select" name="reporttype" id="reporttype">
+                <option value="EMPTY">REPORT TYPE</option>
+                <option value="SUMMARY">SUMMARY</option>
+                <option value="PAYSLIP">PAYSLIP</option>
+                <option value="VTR">VTR</option>
+            </select>
+        </div> -->
+        <div class="inputbox">
+            <select class="select" name="location" id="location">
+                <option value="EMPTY">LOCATION</option>
+                <option value="ALL">ALL</option>
+               {% for location in location %}
+                <option value="{{location.0}}">{{location.0}}</option>
+                {% endfor %}
+            </select>
+        </div>
+      <div class="inputbox">
+        <input type="button" value="Export" onclick="export_reports1()">
+      </div>
+    </form>
+    
+  </div>
+  <script type = "text/javascript" src="{% static '/js/script12.js' %}"></script> 
+
+{% endblock content1 %}

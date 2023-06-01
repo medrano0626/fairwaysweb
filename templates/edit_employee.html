@@ -1,0 +1,402 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>EDIT EMPLOYEE</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+    
+</head>
+
+<body onload="getdate()">
+    <div class="container">
+        <header>Registration</header>
+        {% for values in data %}
+        <form action="/edit_employee/{{ values.1 }}" method="post">
+            {% csrf_token %}
+            <div class="form first active">
+                <div class="details personal">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Last Name</label>
+                            <input type="text" id = "lname" name = "lname" placeholder="Enter Last Name" value="{{values.2}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>First Name</label>
+                            <input type="text" id = "fname" name = "fname" placeholder="Enter First Name" value="{{values.3}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Middle Name</label>
+                            <input type="text" id = "mname" name = "mname" placeholder="Enter Middle Name" value="{{values.4}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Birth Date</label>
+                            <input type="date" id = "birthdate" name = "birthdate" value="{{birthdate}}" required>
+                        </div>
+                        
+                        <div class="input-field">
+                            <label>Current Address</label>
+                            <input type="text" id = "address1" name = "address1" placeholder="Enter Current Address" value="{{values.6}}" >
+                        </div>
+                        
+                        <div class="input-field">
+                            <label>Permanent Address</label>
+                            <input type="text" id = "address2" name = "address2" placeholder="Enter Permanent Address" value="{{values.7}}" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details ID">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Contact No.</label>
+                            <input type="text" id = "contact" name = "contact" placeholder="Enter Contact No." value="{{values.8}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Gender</label>
+                            <select  name="gender" id="gender">
+                                {% if values.9 == 'FEMALE' %}
+                                    <option value="MALE">MALE</option>
+                                    <option value="FEMALE" selected>FEMALE</option>
+                                {% else %}
+                                    <option value="MALE" selected>Male</option>
+                                    <option value="FEMALE">Female</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Civil Status</label>
+                            <select  name="civil" id="civil" value="{{values.10}}">
+                                {% if values.10 == 'MARRIED' %}    
+                                <option value="SINGLE">SINGLE</option>
+                                <option value="MARRIED" selected>MARRIED</option>
+                                {% else %}
+                                <option value="SINGLE" selected>SINGLE</option>
+                                <option value="MARRIED">MARRIED</option>
+                                {% endif %}   
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Spouse Name</label>
+                            <input type="text" id = "spouse" name = "spouse" placeholder="Enter Spouse Name" value="{{values.11}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Child Name 1</label>
+                            <input type="text" id = "child1" name = "child1" placeholder="Enter name of child" value="{{values.12}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Child Name 2</label>
+                            <input type="text" id = "child2" name = "child2" placeholder="Enter name of child" value="{{values.13}}" >
+                        </div>
+                    </div>
+
+                    <button class="nextBtn1" type="button">
+                        <span class="btnText">Next</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div> 
+            </div>
+
+            <div class="form second">
+                <div class="details address">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>SSS</label>
+                            <input type="text" id = "sss" name = "sss" placeholder="Enter SSS No." value="{{values.14}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>PHIC</label>
+                            <input type="text" id = "phic" name = "phic" placeholder="Enter Phillealth No." value="{{values.15}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>HDMF</label>
+                            <input type="text" id = "hdmf" name = "hdmf" placeholder="Enter Pagibig No." value="{{values.16}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>TIN</label>
+                            <input type="text" id = "tin" name = "tin" placeholder="Enter TIN" value="{{values.17}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deduct SSS?</label>
+                            <select  name="sssd" id="sssd">
+                                {% if values.18 == 'NO' %}
+                                    <option value="YES">YES</option>
+                                    <option value="NO" selected>NO</option>
+                                {% else %}
+                                    <option value="YES" selected>YES</option>
+                                    <option value="NO">NO</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deduct PHIC?</label>
+                            <select  name="phicd" id="phicd">
+                                {% if values.19 == 'NO' %}
+                                    <option value="YES">YES</option>
+                                    <option value="NO" selected>NO</option>
+                                {% else %}
+                                    <option value="YES" selected>YES</option>
+                                    <option value="NO">NO</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="details family">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Deduct HDMF?</label>
+                            <select  name="hdmfd" id="hdmfd">
+                                {% if values.20 == 'NO' %}
+                                    <option value="YES">YES</option>
+                                    <option value="NO" selected>NO</option>
+                                {% else %}
+                                    <option value="YES" selected>YES</option>
+                                    <option value="NO">NO</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deduct Tax?</label>
+                            <select  name="taxd" id="taxd">
+                                {% if values.21 == 'NO' %}
+                                    <option value="YES">YES</option>
+                                    <option value="NO" selected>NO</option>
+                                {% else %}
+                                    <option value="YES" selected>YES</option>
+                                    <option value="NO">NO</option>
+                                {% endif %}
+                                </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>HDMF Contri (For Semi-Monthly Only)</label>
+                            <input type="number" step="any" min="0" max="200000" id = "hdmfpay" name = "hdmfpay" placeholder="Enter Pagibig Contri" value="{{values.22}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Department</label>
+                            <select  name="department" id="department">
+                                {% if values.23 == 'MAINTENANCE' %}
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="MAINTENANCE" selected>MAINTENANCE</option>
+                                <option value="DELIVERY">DELIVERY</option>
+                                {% elif values.23 == 'DELIVERY' %}
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="MAINTENANCE" >MAINTENANCE</option>
+                                <option value="DELIVERY" selected>DELIVERY</option>
+                                {% else %}
+                                <option value="ADMIN" selected>ADMIN</option>
+                                <option value="MAINTENANCE" >MAINTENANCE</option>
+                                <option value="DELIVERY" >DELIVERY</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Position</label>
+                            <select  name="position" id="position">
+                                {% if values.24 == 'MAINTENANCE' %}
+                                <option value="OFFICE STAFF">OFFICE STAFF</option>
+                                <option value="MAINTENANCE" selected>MAINTENANCE</option>
+                                <option value="DRIVER">DRIVER</option>
+                                <option value="HELPER">HELPER</option>
+                                {% elif values.24 == 'DRIVER' %}
+                                <option value="OFFICE STAFF">OFFICE STAFF</option>
+                                <option value="MAINTENANCE">MAINTENANCE</option>
+                                <option value="DRIVER" selected>DRIVER</option>
+                                <option value="HELPER">HELPER</option>
+                                {% elif values.24 == 'HELPER' %}
+                                <option value="OFFICE STAFF">OFFICE STAFF</option>
+                                <option value="MAINTENANCE">MAINTENANCE</option>
+                                <option value="DRIVER">DRIVER</option>
+                                <option value="HELPER" selected>HELPER</option>
+                                {% else %}
+                                <option value="OFFICE STAFF" selected>OFFICE STAFF</option>
+                                <option value="MAINTENANCE">MAINTENANCE</option>
+                                <option value="DRIVER">DRIVER</option>
+                                <option value="HELPER">HELPER</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Location</label>
+                            <select  name="location" id="location">
+                                {% for location in location %}
+                                <option value="{{location.1}}">{{location.1}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <div class="backBtn1" type="button">
+                            <i class="uil uil-navigator"></i>
+                            <span class="btnText">Back</span>
+                        </div>
+                        
+                        <button class="nextBtn2" type="button">
+                            <span class="btnText">Next</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+            <div class="form third">
+                <div class="details address">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Trip Rate</label>
+                            <input type="number" step="any" min="0" max="200000" id = "triprate" name = "triprate" placeholder="Enter Trip Rate" value="{{values.26}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Monthly Salary</label>
+                            <input type="number" step="any" min="0" max="200000" id = "salary" name = "salary" placeholder="Enter Monthly Salary" value="{{values.27}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Daily Allowance</label>
+                            <input type="number" step="any" min="0" max="200000" id = "allowance" name = "allowance" placeholder="Enter Daily Allowance" value="{{values.28}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Date Hired</label>
+                            <input type="date" id = "datehired" name = "datehired" value="{{datehired}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Date Permanent</label>
+                            <input type="date" id = "datepermanent" name = "datepermanent" value="{{datepermanent}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Status</label>
+                            <select  name="status" id="status">
+                                {% if values.31 == 'RESIGNED' %}
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="RESIGNED" selected>RESIGNED</option>
+                                {% else %}
+                                    <option value="ACTIVE" selected>ACTIVE</option>
+                                    <option value="RESIGNED">RESIGNED</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details family">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Payslip Password</label>
+                            <input type="text" id = "password" name = "password" placeholder="Enter Payslip Password" value="{{values.32}}" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Show Payslip to Employee?</label>
+                            <select  name="showpayslip" id="showpayslip">
+                                {% if values.33 == 'NO' %}
+                                    <option value="YES">YES</option>
+                                    <option value="NO" selected>NO</option>
+                                {% else %}
+                                    <option value="YES" selected>YES</option>
+                                    <option value="NO">NO</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Payroll Type</label>
+                            <select  name="payrolltype" id="payrolltype">
+                                {% if values.34 == 'SEMI-MONTHLY' %}
+                                <option value="WEEKLY">WEEKLY</option>
+                                <option value="SEMI-MONTHLY" selected>SEMI-MONTHLY</option>
+                                {% else %}
+                                <option value="WEEKLY" selected>WEEKLY</option>
+                                <option value="SEMI-MONTHLY">SEMI-MONTHLY</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>ATM No.</label>
+                            <input type="number" id = "atm" name = "atm" placeholder="Enter ATM No." value="{{values.35}}"  >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Mother's Maiden Name</label>
+                            <input type="text" id = "mother" name = "mother" placeholder="Enter Mother's Maiden Name" value="{{values.36}}"  >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Emergency Contact Person/Number</label>
+                            <input type="text" id = "emergency" name = "emergency" placeholder="Enter Emergency Contact Person/Number" value="{{values.37}}"  >
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <div class="backBtn2" type="button">
+                            <i class="uil uil-navigator"></i>
+                            <span class="btnText">Back</span>
+                        </div>
+                        
+                        <button class="submit" type="submit">
+                            <span class="btnText">Save</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script1.js' %}" data-location="{{locationval}}"></script>
+    
+</body>
+
+</html>

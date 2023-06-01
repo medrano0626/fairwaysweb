@@ -1,0 +1,63 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}GENERATE PAYROLL{% endblock title %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style15.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+
+{% block content1 %}
+    <div class="container">
+        <header>PAYROLL PERIOD</header>
+        <form action="" method="post" id="form_submit">
+            {% csrf_token %}
+                    <div class="content">
+                    </div>
+                   
+                    <div class="content"></div>
+                        <div class="helpertable">
+                            <table id="tablehelper" class="table table-striped table-bordered" width="100%">
+                                <thead>
+                                    <th>PAY TYPE</th>
+                                    <th>EMPLOYEE TYPE</th>
+                                    <th>PERIOD FROM</th>
+                                    <th>PERIOD TO</th>
+                                    <th>PAY MONTH</th>
+                                    <th>PAY YEAR</th>
+                                    <th></th>
+                                 </thead>
+                                    <tbody>
+                                        {% for values in data %}
+                                        <tr>  
+                                            <td>{{ values.1 }}</td>  
+                                            <td>{{ values.2 }}</td>  
+                                            <td>{{ values.3 }}</td>  
+                                            <td>{{ values.4 }}</td>
+                                            <td>{{ values.6 }}</td>
+                                            <td>{{ values.7 }}</td>
+                                            <td><input class = 'removehelper' id="removeexpenses" name = "removeexpenses" type='button' value='Generate' onclick="generate_period('{{ values.0 }}')"></input></td>
+                                        </tr>  
+                                        {% endfor %} 
+                                    </tbody>    
+                            </table>
+                        </div>
+                    </div>
+        </form>
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script12.js' %}"></script> 
+    
+    {% endblock content1 %}
+
+    

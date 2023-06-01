@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ADD USER</title>
+  {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+  <link rel="stylesheet" type = "text/css" href="{% static '/css/style2.css' %}">
+  <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+</head>
+
+<body>
+    <div class="center">
+        <h1>Add User</h1>
+        
+        <form action="signup" method = "post">
+        {% csrf_token %}
+          <div class="inputbox">
+            <input type="text" id="lname" name="lname" required="required">
+            <span>Last Name</span>
+          </div>
+          <div class="inputbox">
+            <input type="text" id="fname" name="fname" required="required">
+            <span>First Name</span>
+          </div>
+          <div class="inputbox">
+            <select  name="role" id="role">
+              {% for values in user_role %}
+                <option value="{{values}}">{{values}}</option>
+              {% endfor %}
+            </select>
+            <span></span>
+          </div>
+          <div class="inputbox">
+            <input type="text" id="username" name="username" required="required">
+            <span>Username</span>
+          </div>
+          <div class="inputbox">
+            <input type="password" id="password" name="password" required="required">
+            <span>Password</span>
+          </div>
+          <div class="inputbox">
+            <input type="submit" value="Save">
+          </div>
+          
+        </form>
+        
+      </div>
+</body>
+
+</html>

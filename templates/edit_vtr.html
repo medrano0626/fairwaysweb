@@ -1,0 +1,274 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}VTR{% endblock title %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style7.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+
+{% block content1 %}
+    <div class="container">
+        <!-- <header>VTR</header> -->
+        {% for vtr in vtr %}
+        <form action="/edit_vtr/{{ vtr.1 }}" method="post" id="form_submit" autocomplete="off">
+            {% csrf_token %}
+            <div class="form third active">
+                <div class="details address">
+                    <!-- <span class="title">-----------------------------------------------------------------------------------------</span> -->
+                    
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Payroll Period</label>
+                            <select  name="payrollperiod" id="payrollperiod" required>
+                                {% for period in period %}
+                                <option value="{{period.11}}">{{period.11}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>VTR No.</label>
+                            <input type="number" min="0" id = "vtrno" name = "vtrno" value = "{{ vtr.1 }}"  autofocus required >
+                        </div>
+
+                        <div class="input-field">
+                            <label>VTR Date</label>
+                            <input type="date"  id = "vtrdate" name = "vtrdate" value = "{{ vtrdate }}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label hidden>Helper Name</label>
+                            <select  name="helpername" id="helpername" hidden>
+                                {% for values1 in data1 %}
+                                <option value="{{values1.2}}, {{values1.3}}" id="{{values1.1}}" data-id="{{values1.1}}">{{values1.2}}, {{values1.3}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label hidden>Driver Name</label>
+                            <select  name="drivername" id="drivername" hidden>
+                                {% for values in data %}
+                                <option value="{{values.2}}, {{values.3}}" id="{{values.1}}" data-id="{{values.1}}">{{values.2}}, {{values.3}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="fields">  
+                        <div class="input-field">
+                            <label>Plate No.</label>
+                            <input type="text" id = "plateno" name = "plateno" value = "{{ vtr.3 }}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Location From</label>
+                            <input type="text" id = "locationfrom" name = "locationfrom" value = "{{ vtr.4 }}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Location To</label>
+                            <input type="text" id = "locationto" name = "locationto" value = "{{ vtr.5 }}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Trip Equivalent</label>
+                            <input type="number" step="any" min="0" max="100000" id = "tripequivalent" name = "tripequivalent" value = "{{ vtr.6 }}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Truck Allowance</label>
+                            <input type="number" step="any" min="0" max="100000" id = "truckallowance" name = "truckallowance" value = "{{ vtr.7 }}" required>
+                        </div>
+
+                    </div>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Search Driver</label>
+                            <input list="driversdata" name="driver" id="driver" value = "{{ drivername }}">
+                            <datalist id="driversdata">
+                                {% for values in data %}
+                                <option value="{{values.2}}, {{values.3}}" id = "{{values.1}}">{{values.1}}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Trip Amount</label>
+                            <input type="number" step="any" min="0" max="100000" id = "drivertripamount" name = "drivertripamount" value = "{{ vtr.9 }}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Driver Allowance</label>
+                            <input type="text" id = "driverallowance" name = "driverallowance" value = "{{ vtr.10 }}">
+                        </div>
+                        <div class="input-field">
+                            <label>Excess Trip</label>
+                            <input type="number" step="any" min="0" max="100000" id = "driverexcesstrip" name = "driverexcesstrip" value = "{{ vtr.11 }}">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Truck Vale</label>
+                            <input type="number" step="any" min="0" max="100000" id = "drivertruckvale" name = "drivertruckvale" value = "{{ vtr.12 }}">
+                        </div>
+                    
+                    </div>
+                    <div class="fields">
+                        <div class="fields">
+                            <div class="input-field">
+                                <label>Search Helper</label>
+                                <input list="helpersdata" name="helper" id="helper">
+                                <datalist id="helpersdata">
+                                    {% for values1 in data1 %}
+                                    <option value="{{values1.2}}, {{values1.3}}" id = "{{values1.1}}">{{values1.1}}</option>
+                                    {% endfor %}
+                                </datalist>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Helper Trip Amount</label>
+                            <input type="number" step="any" min="0" max="100000" id = "helpertripamount" name = "helpertripamount">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Helper Allowance</label>
+                            <input type="number" id = "helperallowance" name = "helperallowance">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Helper Excess Trip Amt</label>
+                            <input type="number" step="any" min="0" max="100000" id = "helperexcesstrip" name = "helperexcesstrip">
+                            
+                        </div>
+
+                        <div class="input-field">
+                            <label>Helper Truck Vale</label>
+                            <input type="number" step="any" min="0" max="100000" id = "helpertruckvale" name = "helpertruckvale">
+                            
+                        </div>
+                        <div class="input-field">
+                            <button class = "addhelper" type="button" onclick="addhelper()">Add Helper</button>
+                        </div>
+                        <div class="input-field">
+                            <label hidden>Driver EmpNo</label>
+                            <input type="text" id = "driverempno" name = "driverempno"  value = "{{ vtr.8 }}" hidden required>
+                        </div>
+
+                        <div class="input-field">
+                            <label hidden>Helper EmpNo</label>
+                            <input type="text" id = "helperempno" name = "helperempno"  hidden>
+                        </div>
+
+                        <div class="input-field">
+                            <label hidden>Helpers</label>
+                            <input type="text" id = "helpers" name = "helpers" value = "{{ allhelper }}" hidden>
+                        </div>
+
+                        <div class="input-field">
+                            <label hidden>Expenses List</label>
+                            <input type="text" id = "expenseslist" name = "expenseslist" hidden>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="details family">
+                    <div class="helpertable">
+                        <table id="tablehelper" class="table table-striped table-bordered" width="100%">
+                            <thead>
+                                <th>EMPNO</th>
+                                <th>HELPER NAME</th>
+                                <th>TRIP AMOUNT</th>
+                                <th>ALLOWANCE</th>
+                                <th>EXCESS TRIP</th>
+                                <th>TRUCK VALE</th>
+                                <th>Remove</th>
+                             </thead>
+                                <tbody>
+                                    {% for helperlist in helperlist%}
+                                    <tr>  
+                                        <td>{{ helperlist.2 }}</td>  
+                                        <td>{{ helperlist.3 }}</td>  
+                                        <td>{{ helperlist.4 }}</td>  
+                                        <td>{{ helperlist.5 }}</td>
+                                        <td>{{ helperlist.6 }}</td>
+                                        <td>{{ helperlist.7 }}</td>
+                                        <td><input class = 'removehelper' type='button' value='Remove' onclick='SomeDeleteRowFunction()'></input></td>
+                                       </tr>  
+                                    {% endfor %}
+                                </tbody>    
+                        </table>
+                    </div>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Expenses</label>
+                            <select  name="expenses" id="expenses">
+                                {% for expenseslist in expenseslist %}
+                                <option value="{{expenseslist.1}}">{{expenseslist.1}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label>Amount</label>
+                            <input type="number" step="any" min="0" max="100000" id = "expensesamount" name = "expensesamount">
+                        </div>
+                        <div class="input-field">
+                            <button class = "addexpenses" type="button" onclick="addexpenses()">Add</button>
+                        </div>
+
+                        <div class="input-field">
+                        </div>
+                        <div class="input-field">
+                        </div>
+                    </div> 
+                    <div class="helpertable">
+                        <table id="tablexpenses" class="table table-striped table-bordered" width="100%">
+                            <thead>
+                                <th>Expenses</th>
+                                <th>Amount</th>
+                                <th>Remove</th>
+                             </thead>
+                                <tbody>
+                                    {% for expenseslist1 in expenseslist1%}
+                                    <tr>  
+                                        <td>{{ expenseslist1.2 }}</td>  
+                                        <td>{{ expenseslist1.3 }}</td>  
+                                        <td><input class = 'removehelper' type='button' value='Remove' onclick='SomeDeleteRowFunction()'></input></td>
+                                       </tr>  
+                                    {% endfor %}
+                                </tbody>    
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="submit" type="button" accesskey="s" onclick="submitForm()">
+                        <span class="btnText">Update</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                    <button class="submit" type="button" accesskey="d" onclick="deletevtr()">
+                        <span class="btnText">Delete</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                    <button class="submit" type="button" accesskey="c" onclick="history.back()">
+                        <span class="btnText">Cancel</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script3.js' %}" defer data-periodvalue = "{{ periodvalue }}" data-oldvtrno = "{{ vtr.1 }}" data-oldperiod = "{{ oldperiod }}"></script> 
+    {% endfor %}
+    {% endblock content1 %}

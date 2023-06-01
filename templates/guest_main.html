@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}GUEST{% endblock title %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %} 
+ <div class="col-md-12">
+        <h4>{{username}} - {{ company }}</h4> 
+        <span>
+            <a href="/guest_password" class="btn btn-primary">Change Password</a>
+        </span>  
+        <div class="table-responsive">
+  <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <th><input type="checkbox" id="checkall" /></th>
+                <th>PERIOD FROM</th>
+                <th>PERIOD TO</th>
+                <th>BASIC PAY</th>
+                <th>OTHER EARNINGS</th>
+                <th>GROSS PAY</th>
+                <th>SSS</th>
+                <th>PHIC</th>
+                <th>HDMF</th>
+                <th>TAX</th>
+                <th>OTHER DED</th>
+                <th>TOTAL DED</th>
+                <th>NET PAY</th>
+                <th>PAYSLIP</th>
+                <!-- <th>Delete</th> -->
+             </thead>
+   <tbody>
+   {% for values in data %}  
+    <tr>  
+     <td><input type="checkbox" class="checkthis" /></td>
+     <td>{{ values.3 }}</td>  
+     <td>{{ values.4 }}</td>  
+     <td>{{ values.10 }}</td>  
+     <td>{{ values.26 }}</td>
+     <td>{{ values.13 }}</td>
+     <td>{{ values.16 }}</td>
+     <td>{{ values.18 }}</td>  
+     <td>{{ values.19 }}</td>  
+     <td>{{ values.20 }}</td>  
+     <td>{{ values.31 }}</td>
+     <td>{{ values.21 }}</td>
+     <td>{{ values.22 }}</td>
+     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="/show_guest_payslip/{{ values.0 }}" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-circle-arrow-right"></span></a></p></td>
+    </tr>  
+    {% endfor %} 
+   </tbody>    
+  </table>
+        </div>
+    </div>
+    
+{% endblock content %}

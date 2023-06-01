@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style7.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- JQuery Core JavaScript -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <title>FIXED DEDUCTIONS</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+</head>
+<body>
+    <div class="containers">
+        <!-- <header>VTR</header> -->
+
+        <form action="/fixed_deductions/{{empno}}" method="post" id="form_submit">
+            {% csrf_token %}
+            <div class="form third active">
+                <div class="details address">
+                    <span class="title">{{ name }}</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Deduction Name</label>
+                            <select  name="dedtype" id="dedtype" autofocus>
+                                {% for dedtype in dedtype %}
+                                <option value="{{ dedtype.1 }}">{{ dedtype.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label hidden>Rowid</label>
+                            <input type="text" id = "rowid" name = "rowid"  hidden>
+                        </div>
+                        <div class="input-field">
+                            <label hidden>Rowid</label>
+                            <input type="text" id = "rowid1" name = "rowid1"  hidden>
+                        </div>
+                    </div>
+                    <div class="fields">  
+                        <div class="input-field">
+                            <label>Amount</label>
+                            <input type="number" step="any" min="0" max="10000000" id = "amount" name = "amount" oninput="computation()" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>No. Of Deductions</label>
+                            <input type="number" step="1" min="0" max="10000000" id = "noofperiod" name = "noofperiod" oninput="computation()"  >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deduction Amount</label>
+                            <input type="number" min="0" max="10000000" id = "perioddedamount" name = "perioddedamount" readonly >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Start Date</label>
+                            <input type="date"  id = "datestart" name = "datestart" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deferred Pay?</label>
+                            <select  name="deferredpay" id="deferredpay" >
+                                <option value="NO">NO</option>
+                                <option value="YES">YES</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Period Remaining</label>
+                            <input type="number" min="0" max="10000000" id = "periodremaining" name = "periodremaining" readonly>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Balance</label>
+                            <input type="number" step="any" min="0" max="10000000" id = "balance" name = "balance" readonly>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Date Maintained</label>
+                            <input type="date"  id = "datemaintained" name = "datemaintained" readonly>
+                        </div>
+                        <div class="input-field">
+                            <label>Date Last Updated</label>
+                            <input type="date"  id = "datelastupdate" name = "datelastupdate" readonly>
+                        </div>
+                        <div class="input-field">
+                            <label>Updated By</label>
+                            <input type="text" id = "user" name = "user" value="{{username}}" readonly>
+                        </div>
+                        <div class="input-field">
+                            <button class = "adddeductions" type="button" id="addded" onclick="adddeductions()" hidden="hidden">Add</button>
+                            <button class = "updatedeductions" type="button" id="updateded" onclick="updatedeductions()" hidden="hidden">Update</button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="details family">
+                    <div class="helpertable">
+                        <table id="tablehelper" name ="tablehelper" class="table table-striped table-bordered" width="100%">
+                            <thead>
+                                <th>ID</th>
+                                <th>DEDUCTIONS NAME</th>
+                                <th>AMOUNT</th>
+                                <th>NO. OF PERIOD</th>
+                                <th>DED. AMOUNT</th>
+                                <th>BALANCE</th>
+                                <th>VIEW/EDIT</th>
+                                <th>DELETE</th>
+                             </thead>
+                                <tbody>
+                                    {% for data in data %}
+                                    <tr>  
+                                        <td>{{ data.0 }}</td> 
+                                        <td>{{ data.2 }}</td>  
+                                        <td>{{ data.3 }}</td>  
+                                        <td>{{ data.4 }}</td>  
+                                        <td>{{ data.5 }}</td>
+                                        <td>{{ data.6 }}</td>
+                                        <td><input class = 'removehelper' id="editdeductions" name = "editdeductions" type='button' value='View/Edit' onclick='editdeductions1()'></input></td>
+                                        <td><input class = 'removehelper' id="deletedeductions" name = "deletedeductions" type='button' value='Delete' onclick='deletedeductions1()'></input></td>
+                                       </tr>  
+                                    {% endfor %} 
+                                </tbody>    
+                        </table>
+                    </div>
+                    
+                </div>
+                
+                <div class="buttons">
+                    
+                    <button class="submit1" type="button" accesskey="c" onclick="backtoempded()">
+                        <span class="btnText">Close</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script8.js' %}" data-periodvalue = "{{ periodvalue }}"></script> 
+    
+</body>
+
+</html>

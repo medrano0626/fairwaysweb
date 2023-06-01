@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>NONFIXED DEDUCTIONS</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+</head>
+<body>
+    <div class="container">
+        <header>ADD NONFIXED DEDUCTIONS - {{name}}</header>
+
+        <form action="/add_nonfixed_ded/{{ empno }}" method="post">
+            {% csrf_token %}
+            <div class="form third active">
+                <div class="details address">
+                    <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Payroll Period</label>
+                            <select  name="payrollperiod" id="payrollperiod" required>
+                                {% for period in period %}
+                                <option value="{{period}}">{{period}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deduction Type</label>
+                            <select  name="dedtype" id="dedtype" required>
+                            {% for dedtype in dedtype %}
+                            <option value="{{dedtype}}">{{dedtype}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Amount</label>
+                            <input type="number" step="any" min="0" max="100000" id = "amount" name = "amount" placeholder="Enter amount" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details family">
+                    <span class="title"></span>
+
+                    <div class="fields">
+                    </div>
+
+                    <div class="buttons">
+                        <button class="submit" type="submit">
+                            <span class="btnText">Save</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        </form>
+    </div>
+    <!-- <script type = "text/javascript" src="{% static '/js/script3.js' %}" defer data-payyear = "{{ payyear }}" data-paymonth = "{{ paymonth }}"></script> -->
+    
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}REPORTS{% endblock title %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style10.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+
+{% block content1 %}
+<div class="center">
+    <form action="/" method = "post" id="form_submit" autocomplete="off">
+    {% csrf_token %}
+    <h1>Gov't Ded. Reports</h1>
+        <div class="inputbox">
+            <select class="select" name="payyear1" id="payyear1">
+                <option value="EMPTY">YEAR</option>
+                {% for year in year %}
+                <option value="{{year.0}}" >{{year.0}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="inputbox">
+            <select class="select" name="paymonth1" id="paymonth1">
+                <option value="EMPTY">MONTH</option>
+                {% for i in month %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="inputbox">
+            <select class="select" name="dedtype" id="dedtype">
+                <option value="EMPTY">DEDUCTION TYPE</option>
+                <option value="SSS">SSS</option>
+                <option value="PHILHEALTH">PHILHEALTH</option>
+                <option value="PAGIBIG">PAGIBIG</option>
+                <option value="TAX">TAX</option>
+            </select>
+            
+        </div>
+      <div class="inputbox">
+        <input type="button" value="Export" onclick="gov_ded_submit()">
+      </div>
+    </form>
+    
+  </div>
+  <script type = "text/javascript" src="{% static '/js/script12.js' %}"></script> 
+
+{% endblock content1 %}

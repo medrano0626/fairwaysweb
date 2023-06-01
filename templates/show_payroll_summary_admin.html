@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}PAYROLL SUMMARY
+
+{% endblock title %}
+{% block content %}
+ <div class="col-md-12">
+        <h4>Payroll Summary </h4> <span>
+            <a href="/unapplied_deductions" class="btn btn-primary">Unapplied Ded</a>
+            <a href="/atmpayrollsummary" class="btn btn-primary">ATM Summary</a>
+            <a href="/cashpayrollsummary" class="btn btn-primary">Cash Summary</a>
+            <a href="/exportpayslipadmin" class="btn btn-primary">Payslip</a>
+            {% if generatebutton == "ACTIVE" %}
+            <a href="/exportmbank" class="btn btn-primary">Metrobank</a>
+            <!-- <a href="/post_payroll" class="btn btn-primary">POST PAYROLL</a> -->
+            <a onclick="post_payroll()" class="btn btn-primary">POST PAYROLL</a>
+            {% endif %}
+            
+        </span>  
+        <div class="table-responsive">
+  <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <th><input type="checkbox" id="checkall" /></th>
+                <th>EMPNO</th>
+                <th>NAME</th>
+                <th>DAYS</th>
+                <th>BASIC PAY</th>
+                <th>TARDY</th>
+                <th>ALLOWANCE</th>
+                <th>HOLIDAY</th>
+                <th>OT</th>
+                <th>OTH. EARNINGS</th>
+                <th>GROSS PAY</th>
+                <th>SSS</th>
+                <th>PHIC</th>
+                <th>HDMF</th>
+                <th>TAX</th>
+                <th>OTHER DED</th>
+                <th>TOTAL DED</th>
+                <th>NET PAY</th>
+             </thead>
+   <tbody>
+   {% for values in data %}  
+    <tr>  
+     <td><input type="checkbox" class="checkthis" /></td>
+     <td>{{ values.1 }}</td>  
+     <td>{{ values.2 }}</td>  
+     <td>{{ values.9 }}</td> 
+     <td>{{ values.10 }}</td>
+     <td>{{ values.30 }}</td>  
+     <td>{{ values.11 }}</td>
+     <td>{{ values.29 }}</td>       
+     <td>{{ values.28 }}</td>    
+     <td>{{ values.26 }}</td>  
+     <td>{{ values.13 }}</td>  
+     <td>{{ values.16 }}</td>  
+     <td>{{ values.18 }}</td>  
+     <td>{{ values.19 }}</td>
+     <td>{{ values.20 }}</td> 
+     <td>{{ values.31 }}</td>  
+     <td>{{ values.21 }}</td>  
+     <td>{{ values.22 }}</td>    
+     </tr>  
+    {% endfor %} 
+   </tbody>    
+  </table>
+        </div>
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script12.js' %}"></script>
+{% endblock content %}

@@ -1,0 +1,104 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style5.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>PHIC/HDMF</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+
+    {% endblock link %}
+    {% block content1 %}
+    <div class="container">
+        <header>PHIC/HDMF</header>
+        {% for values in data %}
+        <form action="phichdmf" method="post">
+            {% csrf_token %}
+            <div class="form third active">
+                <div class="details address">
+                    <span class="title">PHIC-------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>This Amount and Below</label>
+                            <input type="number" step="any" min="0" max="100000" id = "phicto1" name = "phicto1" placeholder="Enter amount" value="{{values.1}}" required autofocus>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Contribution Amount (EE and ER)</label>
+                            <input type="number" step="any" min="0" max="100000" id = "amt1" name = "amt1" placeholder="Enter amount" value="{{values.5}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            
+                        </div>
+
+                        <div class="input-field">
+                            <label>Salrary From</label>
+                            <input type="number" step="any" min="0" max="100000" id = "phicfrom2" name = "phicfrom2" placeholder="Enter amount" value="{{values.2}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Salary To</label>
+                            <input type="number" step="any" min="0" max="100000" id = "phicto2" name = "phicto2" placeholder="Enter amount" value="{{values.3}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>% Of Share (EE and ER)</label>
+                            <input type="number" step="any" min="0" max="100000" id = "amt2" name = "amt2" placeholder="Enter Percentage" value="{{values.6}}" required>
+                        </div>
+                        
+                        <div class="input-field">
+                            <label>This Amount and Above</label>
+                            <input type="number" step="any" min="0" max="100000" id = "phicfrom3" name = "phicfrom3" placeholder="Enter amount" value="{{values.4}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Contribution Amount (EE and ER)</label>
+                            <input type="number" step="any" min="0" max="100000" id = "amt3" name = "amt3" placeholder="Enter amount" value="{{values.7}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="details family">
+                    <span class="title">HDMF------------------------------------------------------------------------------------</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Percentage of Contribution (EE and ER)</label>
+                            <input type="number" step="any" min="0" max="100000" id = "hdmf" name = "hdmf" placeholder="Enter amount" value="{{values.8}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="buttons">
+                        <button class="submit" type="submit">
+                            <span class="btnText">Submit</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    {% endblock content1 %}  
+

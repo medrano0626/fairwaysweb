@@ -1,0 +1,72 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style9.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>RATE</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+
+    {% endblock link %}
+    {% block content1 %}
+    <div class="container">
+        <header>RATE</header>
+        {% for rate in rate %}
+        <form action="rate" method="post">
+            {% csrf_token %}
+            <div class="form third active">
+                <div class="details address">
+                    <span class="title">REGULAR HOLIDAY</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Regular Holiday Rate</label>
+                            <input type="number" step="any" min="0" max="100000" id = "regday" name = "regday" value="{{rate.1}}" required autofocus>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Reg. Holiday OT Rate</label>
+                            <input type="number" step="any" min="0" max="100000" id = "regot" name = "regot" value="{{rate.2}}" required>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="details family">
+                    <span class="title">SPECIAL HOLIDAY</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Special Holiday Rate</label>
+                            <input type="number" step="any" min="0" max="100000" id = "specday" name = "specday" value="{{rate.3}}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Spec. Holiday OT Rate</label>
+                            <input type="number" step="any" min="0" max="100000" id = "specot" name = "specot" value="{{rate.4}}" required>
+                        </div>
+                    </div>
+                </div> 
+                <div class="details family">
+                    <span class="title"></span>
+                    <div class="buttons">
+                        <button class="submit" type="submit">
+                            <span class="btnText">Save</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    {% endblock content1 %}  
+

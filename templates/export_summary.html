@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style10.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- JQuery Core JavaScript -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <title>GENERATE PAYROLL</title>
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+
+</head>
+<body>
+<div class="center">
+    <form action="/generate_payroll_driver/{{ rowid }}" method = "post" id="form_submit">
+    {% csrf_token %}
+    <h1>Generate Payroll</h1>
+        <div class="inputbox">
+            <label>Position</label>
+            <input type="text" id="position" name="position" value="{{ position }}" readonly>
+            <!-- <span>Position</span> -->
+        </div>
+        <div class="inputbox">
+            <input type="text" id="period" name="period" value="{{ period }}" readonly>
+            <!-- <span>Payroll Period</span> -->
+        </div>
+        <div class="inputbox">
+            <!-- <label>Allowance</label> -->
+            <input type="text" id="jk" name="jk" >
+            <span>Range</span>
+            <select class="select" name="range" id="range">
+                <option value="ALL" selected>ALL</option>
+                <option value="SELECTED EMPMOYEE">SELECTED EMPLOYEE</option>
+            </select>
+            
+        </div>
+        <div class="inputbox">
+            <input list="helpersdata" name="emp" id="emp">
+            <datalist id="helpersdata">
+                {% for values in data %}
+                <option value="{{values.2}}, {{values.3}}" id = "{{values.1}}">{{values.1}}</option>
+                {% endfor %}
+            </datalist>
+            <span>Search Employee</span>
+        </div>
+        <div class="input-field">
+            <label >Helper Name</label>
+            <select  name="empname" id="empname" >
+                {% for values in data %}
+                <option value="{{values.2}}, {{values.3}}" id="{{values.1}}" data-id="{{values.1}}">{{values.2}}, {{values.3}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-field">
+            <label >Searched Employee</label>
+            <input type="text" id = "empno" name = "empno" >
+        </div>
+      <div class="inputbox">
+        <input type="button" value="Generate" onclick="submitForm()">
+        <!-- <button type = "submit">LogIn</button> -->
+      </div>
+      
+    </form>
+    
+  </div>
+  <script type = "text/javascript" src="{% static '/js/script7.js' %}" data-periodvalue = "{{ periodvalue }}"></script> 
+    
+</body>
+
+</html>
+    

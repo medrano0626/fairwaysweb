@@ -1,0 +1,170 @@
+/******************************
+	      Boilerplate Css
+******************************/
+
+* {
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	background: #191919;
+	color: #404040;
+	font: 12px/1.4 Arial;
+	min-width: 1300px;
+	position: relative;
+}
+
+a {
+	color: #bebebe;
+	text-decoration: none;
+}
+
+ul {
+	list-style: none;
+}
+
+
+/******************************
+	  Navigation Menu
+******************************/
+
+.horizontal-menu {
+	background-color: #2c2d2f;
+	color: #BEBEBE;
+	display: block;
+	height: 50px;
+	margin: 20px auto;
+	max-width: 1100px;
+}
+
+
+/******************************
+					Globals
+******************************/
+
+.horizontal-menu.plain,
+.horizontal-menu.dropdown {
+	display: block;
+}
+
+.horizontal-menu.plain li,
+.horizontal-menu.dropdown li {
+	float: left;
+	height: 100%;
+	width: 16.6666%;
+}
+
+.horizontal-menu.plain li a,
+.horizontal-menu.dropdown li > a {
+	display: block;
+	height: 100%;
+	line-height: 50px;
+	text-align: center;
+	transition: background-position 0.2s ease 0s;
+}
+
+.horizontal-menu.plain li a,
+.horizontal-menu.dropdown li > div > a {
+	transition: background-position 0.1s ease 0s;
+}
+
+.horizontal-menu.plain li:not(.active):hover a,
+.horizontal-menu.dropdown li > div > a:hover {
+	color: #FFF;
+	background-position: 100% 0;
+}
+
+.horizontal-menu.plain li.active a:active,
+.horizontal-menu.dropdown > div:not(.active):hover > a:active {
+	background: #BA3032;
+	color: #FFF;
+}
+
+
+/******************************
+    Plain Horizontal Menu
+******************************/
+
+.horizontal-menu.plain li a {
+	background: #2c2d2f linear-gradient(to left, #3B3D3F 50%, #2c2d2f 50%) repeat scroll 0 0 / 200% 100%;
+}
+
+.horizontal-menu.plain li.active a {
+	background: #DB3839;
+	color: #FFF;
+}
+
+
+/******************************
+Horizontal Menu With Dropdowns
+******************************/
+
+.horizontal-menu.dropdown li,
+.horizontal-menu.dropdown li > a {
+	transition: background-color 0.2s ease;
+}
+
+.horizontal-menu.dropdown li {
+	position: relative;
+}
+
+.horizontal-menu.dropdown li > a {
+	text-transform: uppercase;
+}
+
+.horizontal-menu.dropdown li > div {
+	background: #2C2D2F;
+	display: none;
+	min-width: 200%;
+	overflow: hidden;
+	position: absolute;
+	padding: 10px;
+	z-index: 999;
+}
+
+.horizontal-menu.dropdown li:not(:first-of-type):not(:last-of-type) > div {
+	left: -50%;
+	border-radius: 0 0 3px 3px;
+}
+
+.horizontal-menu.dropdown li:first-of-type > div {
+	left: 0;
+	border-radius: 0 0 3px 0;
+}
+
+.horizontal-menu.dropdown li:last-of-type > div {
+	right: 0;
+	border-radius: 0 0 0 3px;
+}
+
+.horizontal-menu.dropdown li:hover > div {
+	display: block;
+}
+
+.horizontal-menu.dropdown li:hover,
+.horizontal-menu.dropdown li:hover > div {
+	background: #3B3D3F;
+}
+
+.horizontal-menu.dropdown li > div > a {
+	background: #2c2d2f linear-gradient(to left, #DB3839 50%, #2c2d2f 50%) repeat scroll 0 0 / 200% 100%;
+	border-radius: 2px;
+	display: block;
+	float: left;
+	margin: 2%;
+	padding: 8px 10px;
+	text-align: center;
+	transition: background-position 0.2s ease;
+	width: 46%;
+}
+
+.horizontal-menu.dropdown li > div > a:hover {
+	background-position: 100% 0;
+	cursor: pointer;
+}

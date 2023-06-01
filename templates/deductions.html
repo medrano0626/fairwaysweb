@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Deductions File{% endblock title %}
+
+{% block content %}
+ <div class="col-md-12">
+        <h4>{{company}} - DEDUCTION FILE </h4> <span><a href="/add_deductions" class="btn btn-primary">Add New Deduction</a></span>  
+        <div class="table-responsive">
+  <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <th><input type="checkbox" id="checkall" /></th>
+                <th>ROWID</th>
+                <th>DEDUCTION NAME</th>
+                <th>PRIORITY NUMBER</th>
+                <th>DEDUCTION TYPE</th>
+                <th>Edit</th>
+                <th>Delete</th>
+             </thead>
+   <tbody>
+   {% for values in data %}  
+    <tr>  
+     <td><input type="checkbox" class="checkthis" /></td>
+     <td>{{ values.0 }}</td>  
+     <td>{{ values.1 }}</td>  
+     <td>{{ values.2 }}</td>  
+     <td>{{ values.3 }}</td>  
+     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="/edit_deductions/{{ values.0 }}" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></a></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><a onclick="deletelist('{{ values.0 }}')" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></a></p></td>
+    
+    </tr>  
+    {% endfor %} 
+   </tbody>    
+  </table>
+        </div>
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script12.js' %}"></script> 
+{% endblock content %}

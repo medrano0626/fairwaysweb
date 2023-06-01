@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}UNAPPLIED DEDUCTIONS
+
+{% endblock title %}
+{% block content %}
+ <div class="col-md-12">
+        <h4>Unapplied Deductions</h4> <span>
+            </span>  
+        <div class="table-responsive">
+  <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <th><input type="checkbox" id="checkall" /></th>
+                <th>EMPNO</th>
+                <th>NAME</th>
+                <th>DEDUCTION NAME</th>
+                <th>AMOUNT</th>
+             </thead>
+   <tbody>
+   {% for values in data %}  
+    <tr>  
+     <td><input type="checkbox" class="checkthis" /></td>
+     <td>{{ values.0 }}</td>  
+     <td>{{ values.1 }}, {{ values.2 }}, {{ values.3 }}</td>  
+     <td>{{ values.4 }}</td>  
+     <td>{{ values.5 }}</td>   
+     </tr>  
+    {% endfor %} 
+   </tbody>    
+  </table>
+        </div>
+    </div>
+    
+{% endblock content %}

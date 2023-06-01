@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>ADD DEDUCTIONS</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+</head>
+<body>
+    <div class="container">
+        <header>Deductions</header>
+        {% for values in data %}
+        <form action="/edit_deductions/{{ values.0 }}" method="post">
+            {% csrf_token %}
+            <div class="form first active">
+                <div class="details personal">
+                    <span class="title">Deduction Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Deduction Name</label>
+                            <input type="text" size="50" id = "ded_name" name = "ded_name" placeholder="Enter Deduction Name" value="{{values.1}}" required autofocus>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Priority Number</label>
+                            <input type="text" size="50"  id = "priority" name = "priority" placeholder="Enter Priority Number" value="{{values.2}}" required >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Deduction Type</label>
+                            <select  name="ded_type" id="ded_type">
+                            {% if values.3 == 'NONFIXED' %}
+                                <option value="FIXED">FIXED</option>
+                                <option value="NONFIXED" selected>NONFIXED</option>
+                              {% else %}
+                                  <option value="FIXED" selected>FIXED</option>
+                                  <option value="NONFIXED">NONFIXED</option>
+                              {% endif %}
+                              </select>
+                            </select>
+                        </div>
+                        
+                        <button class="submit" type="submit">
+                            <span class="btnText">Save</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                       
+                    </div>
+                </div>
+            </div>
+                    </div>
+                </div> 
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+</body>
+</html>

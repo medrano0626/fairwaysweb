@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@600&display=swap");
+body {
+    /* background: #4070f4; */
+    background: url(../images/bg.jpeg); 
+    background-repeat: no-repeat;
+    background-size:100% 100vh;
+  }
+.center{
+  margin: 30px auto;
+  padding: 50px 50px;
+  box-sizing: border-box;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 600px; 
+  background: #fff;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 10px;
+}
+.center h1 {
+  
+  font-size: 1.5em;
+  border-left: 5px solid dodgerblue;
+  padding: 10px;
+  color: #000;
+  letter-spacing: 5px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  padding-left: 10px;
+}
+.center .inputbox {
+  position: relative;
+  width: 300px;
+  height: 50px;
+  margin-bottom: 25px;
+}
+.center .inputbox input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 2px solid #000;
+  outline: none;
+  background: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.2em;
+}
+.center .inputbox label {
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 2px solid #d10e0e;
+    outline: none;
+    background: none;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 1.2em;
+    margin-bottom: 25px;
+  }
+.center .inputbox select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 108%;
+    border: 2px solid #000;
+    outline: none;
+    background: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.2em;
+  }
+  
+.center .inputbox:last-child {
+  margin-bottom: 0;
+}
+.center .inputbox label {
+  position: relative;
+  top: 14px;
+  left: 20px;
+  font-size: 1em;
+  /* transition: 0.6s; */
+  font-family: sans-serif;
+}
+/* .center .inputbox input:focus ~ span,
+.center .inputbox input:valid ~ span {
+  transform: translateX(-13px) translateY(-35px);
+  font-size: 1em;
+} */
+.center .inputbox [type="button"] {
+  /* width: 50%; */
+  
+  width: 320px;
+  
+  background: dodgerblue;
+  color: #fff;
+  border: #fff;
+}
+.center .inputbox:hover [type="button"] {
+  cursor:pointer;
+}
+.center .inputbox:focus [type="button"] {
+  background-color: #041546;
+}
+.center .inputbox [type="submit"] {
+  /* width: 50%; */
+  
+  width: 320px;
+  
+  background: dodgerblue;
+  color: #fff;
+  border: #fff;
+}
+.center .inputbox:hover [type="submit"] {
+  cursor:pointer;
+}
+.center .inputbox:focus [type="submit"] {
+  background-color: #041546;
+}

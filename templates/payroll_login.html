@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIn</title>
+    <link rel="stylesheet" href="/website/static/style.css">
+</head>
+<body>
+    <h1 style="font-size: 60px;">Fairways Cargo Movers Corporation</h1>
+    <form action="./payroll_main.html">
+        <label for="user_name">User_name:</label>
+        <input type="text" id="user_name" name="user_name"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button onclick="loginfunction()">LogIn</button>
+        <button onclick="cancelfunction()">Cancel</button>
+      </form>
+    <script>
+        function loginfunction(){
+            
+        }
+        function cancelfunction(){
+            document.getElementById('user_name').value=''
+            document.getElementById('password').value=''
+        }
+    </script>
+    
+</body>
+</html>

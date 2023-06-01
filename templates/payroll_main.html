@@ -1,0 +1,11 @@
+{% extends "basemain.html"%}
+{% block title %}Main{% endblock %}
+{% block content %}
+<form action="" method="post" id="form_submit">
+  {% csrf_token %}
+<div style="padding:0 16px">
+  <h1 style="text-align: center;">FAIRWAYS CARGO MOVERS CORP.</h1>
+  <h2 style="text-align: center;">Payroll System - {{ company }} , Username - {{ username }}</h2>
+</div>
+</form>
+{% endblock content %}

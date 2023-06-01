@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Delete</title>
+</head>
+<body>
+    <!-- {% if source.0 == 'delete_employee' %}
+        delete_employee
+    {%endif%} -->
+    {% if source == 'delete_employee' %}
+    <form style="text-align: center;" method="post" action="delete_employee/{{ empno }}">  
+    {% elif source == 'delete_deductions' %}
+    <form style="text-align: center;" method="post" action="delete_deductions/{{ empno }}"> 
+    {% elif source == 'delete_sss' %}
+    <form style="text-align: center;" method="post" action="delete_sss/{{ empno }}"> 
+    {% elif source == 'delete_payroll_period' %}
+    <form style="text-align: center;" method="post" action="delete_payroll_period/{{ empno }}"> 
+    {% elif source == 'delete_user' %}
+    <form style="text-align: center;" method="post" action="delete_user/{{ empno }}">
+    {% elif source == 'delete_nonfixed' %}
+    <form style="text-align: center;" method="post" action="delete_nonfixed/{{ empno }}">
+    {% endif %}
+    {% csrf_token %}
+        <h1>{{message}}{{ empno }}?</h1><br>
+        <input class="btn btn-danger" type="submit" value="Yes" />
+        {% if source == 'delete_employee' %}
+        <a href="/masterfile"><div class="btn btn-primary">Cancel</div></a>
+        {% elif source == 'delete_deductions' %}
+        <a href="/deductions"><div class="btn btn-primary">Cancel</div></a> 
+        {% elif source == 'delete_sss' %}
+        <a href="/sss"><div class="btn btn-primary">Cancel</div></a>
+        {% elif source == 'delete_payroll_period' %}
+        <a href="/payroll_period"><div class="btn btn-primary">Cancel</div></a>
+        {% elif source == 'delete_user' %}
+        <a href="/user"><div class="btn btn-primary">Cancel</div></a>
+        {% elif source == 'delete_nonfixed' %}
+        <a href="/nonfixed_deductions/{{empno1}}"><div class="btn btn-primary">Cancel</div></a>
+        {% endif %}
+    
+      <!-- <a href="/masterfile"><div class="btn btn-primary">Cancel</div></a> -->
+ </form>
+</body>
+</html>

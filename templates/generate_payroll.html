@@ -1,0 +1,76 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}GENERATE PAYROLL{% endblock title %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style10.css' %}">
+    <link rel="icon" type = "images/x-icon" href="{% static '/images/logo.png' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+
+{% block content1 %}
+<div class="center">
+    <form action="/generate_payroll_driver/{{ rowid }}" target="_blank" method = "post" id="form_submit" autocomplete="off">
+    {% csrf_token %}
+    <h1>Generate Payroll</h1>
+        <div class="inputbox">
+            <input type="text" id="position" name="position" value="{{ position }}" readonly>
+        </div>
+        <div class="inputbox">
+            <input type="text" id="period" name="period" value="{{ period }}" readonly>
+        </div>
+        <div class="inputbox">
+            <select class="select" name="range" id="range" onchange="selection()">
+                <option value="SSS" selected>SELECT RANGE</option>
+                <option value="ALL" >ALL</option>
+                <option value="SELECTED EMPMOYEE">SELECTED EMPLOYEE</option>
+            </select>
+            
+        </div>
+        <div class="inputbox">
+            <input list="helpersdata" name="emp" id="emp" placeholder="Select Employee" hidden>
+            <datalist id="helpersdata">
+                {% for values in data %}
+                <option value="{{values.2}}, {{values.3}}" id = "{{values.1}}">{{values.1}}</option>
+                {% endfor %}
+            </datalist>
+            <select class="select" name="location" id="location" hidden>
+                <option value="SSS" selected>LOCATION</option>
+                <option value="ALL" >ALL</option>
+                {% for location in location %}
+                <option value="{{location.1}}">{{location.1}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="xxx">
+            <label hidden>Helper Name</label>
+            <select  name="empname" id="empname" hidden>
+                {% for values in data %}
+                <option value="{{values.2}}, {{values.3}}" id="{{values.1}}" data-id="{{values.1}}">{{values.2}}, {{values.3}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="xxx">
+            <label hidden>Searched Employee</label>
+            <input type="text" id = "empno" name = "empno" hidden>
+        </div>
+      <div class="inputbox">
+        <input type="button" value="Generate" onclick="submitForm()">
+      </div>
+    </form>
+    
+  </div>
+  <script type = "text/javascript" src="{% static '/js/script7.js' %}" defer data-periodvalue = "{{ periodvalue }}" data-rowid = "{{ rowid }}"></script> 
+
+{% endblock content1 %}

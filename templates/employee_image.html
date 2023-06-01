@@ -1,0 +1,51 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style13.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
+    <title>Capture Image</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+
+    {% endblock link %}
+    {% block content1 %}
+    <div class="container">
+        <header>Employee Picture</header>
+        <form action="/employee_image/{{rowid}}" method="post" id="form_submit">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-6" style="align-items: center;">
+                    <label>Live Photo</label>
+                    <div id="my_camera" class="pre_capture_frame" ></div>
+                    <input type="hidden" name="captured_image_data" id="captured_image_data" value = "{{image_data}}">
+                    <br>
+                    <input type="button" class="btn btn-info btn-round btn-file" value="Capture" onClick="take_snapshot()">	
+                </div>
+                <div class="col-lg-6" style="align-items: center;">
+                    <label>Result</label>
+                    <div id="results" >
+                        <img style="width: 350px; height: 275px;" class="after_capture_frame" src="{% static '/images/logo.png' %}" />
+                    </div>
+                    <div id="results1" hidden>
+                        
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-success" onclick="saveSnap()">Save Picture</button>
+                </div>	
+              </div>
+                
+        </form>
+    </div>
+    <script type = "text/javascript" src="{% static '/js/script13.js' %}" data-image_data="{{ image_data }}"></script>
+    {% endblock content1 %}  
+

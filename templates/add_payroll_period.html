@@ -1,0 +1,86 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block title %}PAYROLL PERIOD{% endblock title %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style5.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+{% endblock link %}
+
+{% block content1 %}
+<div class="container">
+    <header>ADD PAYROLL PERIOD</header>
+
+    <form action="/add_payroll_period/1" method="post">
+        {% csrf_token %}
+        <div class="form third active">
+            <div class="details address">
+                <span class="title">-----------------------------------------------------------------------------------------</span>
+
+                <div class="fields">
+                    <div class="input-field">
+                        <label>Pay Type</label>
+                        <select  name="paytype" id="paytype">
+                            <option value="WEEKLY">WEEKLY</option>
+                            <option value="SEMI-MONTHLY">SEMI-MONTHLY</option>
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Employee Type</label>
+                        <select  name="employeetype" id="employeetype">
+                            <option value="OFFICE STAFF">OFFICE STAFF</option>
+                            <option value="MAINTENANCE">MAINTENANCE</option>
+                            <option value="DRIVER">DRIVER</option>
+                            <option value="HELPER">HELPER</option>
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Period From</label>
+                        <input type="date" id = "periodfrom" name = "periodfrom" >
+                    </div>
+
+                    <div class="input-field">
+                        <label>Period To</label>
+                        <input type="date" id = "periodto" name = "periodto" >
+                    </div>
+
+                    <div class="input-field">
+                        <label>Pay Month</label>
+                        <select  name="paymonth1" id="paymonth1">
+                           
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Pay Year</label>
+                        <select  name="payyear1" id="payyear1">
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="submit" type="submit">
+                        <span class="btnText">Save</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<script type = "text/javascript" src="{% static '/js/script2.js' %}"></script>  
+{% endblock content1 %}

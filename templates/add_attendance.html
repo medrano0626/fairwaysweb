@@ -1,0 +1,134 @@
+{% extends "basemain.html"%}
+{% load static %}
+{% block link %} 
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" type = "text/css" href="{% static '/css/style12.css' %}">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <title>ATTENDANCE</title>
+    {% if messages %}
+    {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+    {% endfor %}
+    {% endif %}
+
+    {% endblock link %}
+    {% block content1 %}
+    <div class="container">
+        <header>ATTENDANCE - {{emptype}}</header>
+        {% for period in period %}
+        <h4>{{period.11}}</h4>
+        {% endfor %}
+        <form action="/add_attendance" method="post" id="form_submit" autocomplete="off">
+            {% csrf_token %}
+            <div class="form third active">
+                <div class="details address">
+                    <span class="title"></span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Search Employee</label>
+                            <input list="empdata" name="emp" id="emp" autofocus>
+                            <datalist id="empdata">
+                                {% for emp in emp %}
+                                <option value="{{emp.2}}, {{emp.3}}" id = "{{emp.1}}">{{emp.1}}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Employee No.</label>
+                            <input type="text" step="any" min="0" max="100000" id = "empno" name = "empno" readonly required>
+                        </div>
+                        <div class="input-field">
+                            <label hidden>Employee No.</label>
+                            <input type="text" step="any" min="0" max="100000" id = "checkdelete" name = "checkdelete" hidden>
+                        </div>
+                        <div class="input-field">
+                            <label hidden>Driver Name</label>
+                            <select  name="empname" id="empname" hidden disabled>
+                                {% for emp in emp %}
+                                <option value="{{emp.2}}, {{emp.3}}" id="{{emp.1}}" data-id="{{emp.1}}">{{emp.2}}, {{emp.3}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="details address">
+                    <span class="title"></span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Regular Day (Days)</label>
+                            <input type="number" step="any" max="100000" id = "regday" name = "regday" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>OT (Hours)</label>
+                            <input type="number" step="any" max="100000" id = "regot" name = "regot">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="details family">
+                    <span class="title"></span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Regular Holiday (Days)</label>
+                            <input type="number" step="any" max="100000" id = "reghday" name = "reghday">
+                        </div>
+
+                        <div class="input-field">
+                            <label>OT (Hours)</label>
+                            <input type="number" step="any" max="100000" id = "reghot" name = "reghot">
+                        </div>
+                    </div>
+                </div> 
+                <div class="details family">
+                    <span class="title"></span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Special Holiday (Days)</label>
+                            <input type="number" step="any" max="100000" id = "specday" name = "specday">
+                        </div>
+
+                        <div class="input-field">
+                            <label>OT (Hours)</label>
+                            <input type="number" step="any" min="0" max="100000" id = "specot" name = "specot">
+                        </div>
+                        <div class="input-field">
+                            <label>Tardy (Hours)</label>
+                            <input type="number" step="any" min="0" max="100000" id = "tardy" name = "tardy">
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button class="submit" type="button" accesskey="s" onclick="saveatt()">
+                            <span class="btnText">Save</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                        <button class="backBtn2" type="button" onclick="deleteatt()" hidden>
+                            <span class="btnText">Delete</span>
+                            <i class="uil uil-navigator" hidden></i>
+                        </button>
+                        <button class="backBtn2" type="button" onclick="close1()">
+                            <span class="btnText">Close</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        </form>
+        
+    </div>
+    {% for period in period %}
+    <script type = "text/javascript" src="{% static '/js/script7.js' %}" data-rowid = "{{ period.0 }}"></script> 
+    {% endfor %}
+    {% endblock content1 %}  
+
