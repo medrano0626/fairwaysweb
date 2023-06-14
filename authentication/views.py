@@ -2438,7 +2438,7 @@ def atmpayrollsummary(request):
                 worksheet.write(row, i, '=SUM('+ str(cell_range) +')', money1)
         else:
             for value in a:
-                worksheet.write('A2', str(a), bold1)
+                # worksheet.write('A2', str(a), bold1)
                 if value == "34":
                     for i in range(2, col-2,1):
                         cell_range = xl_range(6,i,32,i)
@@ -2612,7 +2612,7 @@ def cashpayrollsummary(request):
                 worksheet.write(row, i, '=SUM('+ str(cell_range) +')', money1)
         else:
             for value in a:
-                worksheet.write('A2', str(a), bold1)
+                # worksheet.write('A2', str(a), bold1)
                 if value == "34":
                     for i in range(2, col-2,1):
                         cell_range = xl_range(6,i,32,i)
@@ -3640,7 +3640,7 @@ def simulatesummary(request):
             worksheet.write(row, i, '=SUM('+ str(cell_range) +')', money1)
     else:
         for value in a:
-            worksheet.write('A2', str(a), bold1)
+            # worksheet.write('A2', str(a), bold1)
             if value == "34":
                 for i in range(2, col-2,1):
                     cell_range = xl_range(6,i,32,i)
@@ -3950,7 +3950,7 @@ def posted_summary_reports(request):
                 worksheet.write(row, i, '=SUM('+ str(cell_range) +')', money1)
         else:
             for value in a:
-                worksheet.write('A2', str(a), bold1)
+                # worksheet.write('A2', str(a), bold1)
                 if value == "34":
                     for i in range(2, col-2,1):
                         cell_range = xl_range(6,i,32,i)
