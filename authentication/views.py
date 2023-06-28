@@ -43,11 +43,12 @@ def user(request):
             cursor = connection.cursor()
             cursor.execute(f"SELECT * FROM TBL_USER WHERE COMPANY = '{company}' and ROLE = 'PAYROLL'")
             data = cursor.fetchall()
+            return render(request, 'user.html',{'data': data, 'company': company, 'role1': request.session['role1']})
         elif role1 == "SUPERUSER":
             cursor = connection.cursor()
-            cursor.execute(f"SELECT * FROM TBL_USER where COMPANY = '{company}' and ROLE != 'SUPERUSER'")
+            cursor.execute(f"SELECT * FROM TBL_USER where ROLE = 'ADMIN'")
             data = cursor.fetchall()
-        return render(request, 'user.html',{'data': data, 'company': company})
+            return render(request, 'user_admin.html',{'data': data, 'company': company, 'role1': request.session['role1']})
     return redirect('payroll_main')
 
 @login_required
@@ -73,13 +74,13 @@ def change_password(request):
             messages.error(request, "Wrong current password!")
             return redirect("change_password")
 
-    return render(request,'change_password.html')
+    return render(request,'change_password.html',{'role1': request.session['role1']})
 
 @login_required
 def signup(request):
     username = request.session['username']
     company = request.session['company']
-    role1 = request.session['role1']
+    # role1 = request.session['role1']
     if request.method == "POST":
         username = request.POST['username']
         fname = request.POST['fname']
@@ -122,13 +123,64 @@ def signup(request):
         data_values = (username, lname.upper(), fname.upper(), company, designation, id)
         cursor.execute(query,data_values)
         r = cursor.fetchall()
-        return redirect("user")
+        return redirect("user")   
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT * FROM TBL_ROLE ORDER BY ROLE1")
+    user_role = cursor.fetchall()
+    return render(request, "add_user.html", {'user_role': user_role, 'role1': request.session['role1']})
+
+@login_required
+def signup_admin(request):
+    username = request.session['username']
+    # company = request.session['company']
+    # role1 = request.session['role1']
+    if request.method == "POST":
+        username = request.POST['username']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        password = request.POST['password']
+        company = request.POST['company'].upper()
+        email = ""
         
-    if role1 == "ADMIN":
-        user_role = ["Role","PAYROLL","BILLING","SPARE PARTS"]
-    else:
-        user_role = ["Role", "ADMIN", "BILLING", "PAYROLL","SPARE PARTS"]    
-    return render(request, "add_user.html", {'user_role': user_role})
+        if User.objects.filter(username=username):
+            messages.error(request, "Username already exist! Please try some other username.")
+            return redirect("signup_admin")
+        
+        if len(username)>20:
+            messages.error(request, "Username must be under 20 charcters!!")
+            return redirect('signup_admin')
+        
+        if not username.isalnum():
+            messages.error(request, "Username must be Alpha-Numeric!!")
+            return redirect('signup_admin')
+
+        if company == "COMPANY":
+            messages.error(request, "Select company of the user.")
+            return redirect('signup_admin')
+        
+        myuser = User.objects.create_user(username, email, password)
+        myuser.first_name = fname
+        myuser.last_name = lname
+        myuser.is_active = True
+        myuser.save()
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT * FROM auth_user where username = '{username}'")
+        data = cursor.fetchall()
+        for r in data:
+            id = r[0]
+        cursor.close()
+        cursor = connection.cursor()
+        query = ("insert into TBL_USER (username, lastname, firstname, company, role, id)"
+                            "VALUES (%s, %s, %s, %s, %s, %s)"
+                        )
+        data_values = (username, lname.upper(), fname.upper(), company, "ADMIN", id)
+        cursor.execute(query,data_values)
+        r = cursor.fetchall()
+        return redirect("user")   
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT * FROM TBL_COMPANY ORDER BY COMPANY")
+    data = cursor.fetchall()
+    return render(request, "add_admin.html", {'data': data, 'role1': request.session['role1']})
 
 def signout(request):
     logout(request)
@@ -147,7 +199,7 @@ def guest_main(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_FINAL_PAYROLL where EMPNO = {username} order by periodfrom desc limit 25")
     data = cursor.fetchall() 
-    return render(request, 'guest_main.html', {'username':  username, 'company':  company, 'data': data})
+    return render(request, 'guest_main.html', {'username':  username, 'company':  company, 'data': data, 'role1': request.session['role1']})
 
 def guest_password(request):
     username = request.session['username']
@@ -698,7 +750,7 @@ def delete_sss(request, rowid):
 ########################### PHIC AND HDMF ADD/EDIT ##################################
 @login_required 
 def phichdmf(request):
-    
+    role1 = request.session['role1']
     if request.method == 'POST':
         phicto1 = request.POST['phicto1']
         phicfrom2 = request.POST['phicfrom2']
@@ -718,7 +770,7 @@ def phichdmf(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_PHICHDMF")
     data = cursor.fetchall() 
-    return render(request, 'phichdmf.html', {'data': data})
+    return render(request, 'phichdmf.html', {'data': data, 'role1': role1})
 
 ########################### END OF PHIC AND HDMF ADD/EDIT ##################################
 
@@ -729,7 +781,7 @@ def payroll_period(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_PAYROLL_PERIOD where status = 'ACTIVE' and company = '{company}'")
     data = cursor.fetchall()
-    return render(request, 'payroll_period.html',{'data': data, 'company': company})
+    return render(request, 'payroll_period.html',{'data': data, 'company': company, 'role1': request.session['role1']})
 @login_required 
 def add_payroll_period(request,rowid):
     username = request.session['username']
@@ -773,7 +825,7 @@ def edit_payroll_period(request, rowid):
         periodto = periodto[0:10]
         paymonth = row[6]
         payyear = row[7]
-    return render(request, 'edit_payroll_period.html', {'data': data, 'periodto': periodto, 'periodfrom': periodfrom, 'paymonth': paymonth, 'payyear': payyear})
+    return render(request, 'edit_payroll_period.html', {'data': data, 'periodto': periodto, 'periodfrom': periodfrom, 'paymonth': paymonth, 'payyear': payyear, 'role1': request.session['role1']})
 
 def save_edited_period(request, rowid):
     username = request.session['username']
@@ -844,11 +896,11 @@ def other_list(request):
         else:
             cursor.execute(f"SELECT * FROM TBL_EARNINGS_TYPE  where company = '{company}' order by earningsname")
         locationlist = cursor.fetchall()        
-        return render(request, 'other_list.html',{'locationlist': locationlist, 'selected': selected})
+        return render(request, 'other_list.html',{'locationlist': locationlist, 'selected': selected, 'role1': request.session['role1']})
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_LOCATION WHERE COMPANY = '{company}' order by location")
     locationlist = cursor.fetchall()
-    return render(request, 'other_list.html',{'locationlist': locationlist}) 
+    return render(request, 'other_list.html',{'locationlist': locationlist, 'role1': request.session['role1']}) 
 
 @login_required 
 def checkduplicate(request):
@@ -889,7 +941,7 @@ def emp_deductions(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_MASTERFILE WHERE COMPANY = '{company}' and status = 'ACTIVE' order by empno desc")
     data = cursor.fetchall()
-    return render(request, 'emp_deductions.html',{'data': data, 'company': company})
+    return render(request, 'emp_deductions.html',{'data': data, 'company': company, 'role1': request.session['role1']})
 
 @login_required 
 def nonfixed_deductions(request, empno):
@@ -960,7 +1012,7 @@ def nonfixed_deductions(request, empno):
     period = [""]
     for r in dataperiod:
         period.append(r[3].strftime("%m/%d/%Y") + "-" + r[4].strftime("%m/%d/%Y"))
-    return render(request, 'nonfixed_deductions.html',{'period': period, 'empno': empno, 'name': name, 'username': username, 'data': data,'data1': data1, 'company': company, 'dedtype': dedtype})
+    return render(request, 'nonfixed_deductions.html',{'period': period, 'empno': empno, 'name': name, 'username': username, 'data': data,'data1': data1, 'company': company, 'dedtype': dedtype, 'role1': request.session['role1']})
 @login_required 
 def checkdeductions1(request):
     #Get the variable text
@@ -1040,7 +1092,7 @@ def fixed_deductions(request, empno):
         name = str(r[1])+ " - " + r[2] + ", " + r[3]
     cursor.execute(f"SELECT * FROM TBL_DEDUCTION_TYPE WHERE deduction_type = 'FIXED' and company = '{company}'")
     dedtype = cursor.fetchall()
-    return render(request, 'fixed_deductions.html',{'empno': empno, 'name': name, 'username': username, 'data': data,'data1': data1, 'company': company, 'dedtype': dedtype})
+    return render(request, 'fixed_deductions.html',{'empno': empno, 'name': name, 'username': username, 'data': data,'data1': data1, 'company': company, 'dedtype': dedtype, 'role1': request.session['role1']})
 
 @login_required 
 def checkdeductions(request):
@@ -1135,7 +1187,7 @@ def other_earnings(request, empno):
     period = [""]
     for r in dataperiod:
         period.append(r[3].strftime("%m/%d/%Y") + "-" + r[4].strftime("%m/%d/%Y"))
-    return render(request, 'other_earnings.html',{'period': period, 'empno': empno, 'name': name, 'username': username, 'data': data,'data1': data1, 'company': company, 'dedtype': dedtype})
+    return render(request, 'other_earnings.html',{'period': period, 'empno': empno, 'name': name, 'username': username, 'data': data,'data1': data1, 'company': company, 'dedtype': dedtype, 'role1': request.session['role1']})
 
 @login_required 
 def checkearnings1(request):
@@ -1162,7 +1214,7 @@ def generate(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_PAYROLL_PERIOD where status = 'ACTIVE' and company = '{company}'")
     data = cursor.fetchall()
-    return render(request, 'generate.html',{'data': data, 'company': company})  
+    return render(request, 'generate.html',{'data': data, 'company': company, 'role1': request.session['role1']})  
 
 @login_required 
 def generate_payroll(request, rowid):
@@ -1181,7 +1233,7 @@ def generate_payroll(request, rowid):
         data = cursor.fetchall()
         cursor.execute(f"SELECT * FROM TBL_LOCATION where company = '{company}' ORDER BY LOCATION")
         location = cursor.fetchall()
-        return render(request, 'generate_payroll.html',{'position': position, 'rowid': rowid, 'period': period, 'data': data, 'company': company, 'location': location})
+        return render(request, 'generate_payroll.html',{'position': position, 'rowid': rowid, 'period': period, 'data': data, 'company': company, 'location': location, 'role1': request.session['role1']})
     cursor.execute(f"SELECT * FROM TBL_PAYROLL_PERIOD where rowid = {rowid1}")
     data = cursor.fetchall()
     for r in data:
@@ -1192,7 +1244,7 @@ def generate_payroll(request, rowid):
     data = cursor.fetchall()
     cursor.execute(f"SELECT * FROM TBL_LOCATION where company = '{company}' ORDER BY LOCATION")
     location = cursor.fetchall()
-    return render(request, 'generate_payroll.html',{'position': position, 'rowid': rowid1, 'period': period, 'data': data, 'company': company, 'location': location})
+    return render(request, 'generate_payroll.html',{'position': position, 'rowid': rowid1, 'period': period, 'data': data, 'company': company, 'location': location, 'role1': request.session['role1']})
 
 
 @login_required 
@@ -1887,7 +1939,7 @@ def show_payroll_summary(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_TEMP_PAYROLL where user = '{username}' and company = '{company}' order by empname")
     data = cursor.fetchall()
-    return render(request,'show_payroll_summary.html',{'data': data, 'generatebutton': request.session['generatebutton']})
+    return render(request,'show_payroll_summary.html',{'data': data, 'generatebutton': request.session['generatebutton'], 'role1': request.session['role1']})
 
 @login_required 
 def show_payroll_summary_admin(request):
@@ -1896,7 +1948,7 @@ def show_payroll_summary_admin(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_TEMP_PAYROLL where user = '{username}' and company = '{company}' order by empname")
     data = cursor.fetchall()
-    return render(request,'show_payroll_summary_admin.html',{'data': data, 'generatebutton': request.session['generatebutton']})
+    return render(request,'show_payroll_summary_admin.html',{'data': data, 'generatebutton': request.session['generatebutton'], 'role1': request.session['role1']})
 
 @login_required         
 def exportvtr(request):
@@ -2267,6 +2319,7 @@ def post_payroll_admin(request):
 
 @login_required   
 def export_summary(request):
+    company = request.session['company']
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_PAYROLL_PERIOD where rowid = {rowid}")
     data = cursor.fetchall()
@@ -2278,7 +2331,7 @@ def export_summary(request):
     data = cursor.fetchall()
     # return render(request, 'generate_payroll.html',{'position': position, 'rowid': rowid, 'period': period, 'data': data, 'company': company})
 
-    return render(request,'export_summary.html')
+    return render(request,'export_summary.html',{'role1': request.session['role1']})
 
 @login_required 
 def atmpayrollsummary(request):
@@ -2910,7 +2963,7 @@ def unapplied_deductions(request):
                             inner join TBL_MASTERFILE on TBL_TEMP_UNAPPLIED.empno = TBL_MASTERFILE.empno \
                             where user = '{username}' and TBL_TEMP_UNAPPLIED.company = '{company}'")
     data = cursor.fetchall()
-    return render(request, 'unapplied_deductions.html',{'data': data})
+    return render(request, 'unapplied_deductions.html',{'data': data, 'role1': request.session['role1']})
 
 @login_required 
 def vtr(request):
@@ -3082,7 +3135,7 @@ def vtr(request):
             periodvalue = r[2]
     else:
         periodvalue = "None"
-    return render(request, 'vtr.html',{'data': data,'data1': data1, 'company': company, 'period': period, 'expenseslist': expenseslist, 'periodvalue': periodvalue}) #,{'data': data, 'company': company}
+    return render(request, 'vtr.html',{'data': data,'data1': data1, 'company': company, 'period': period, 'expenseslist': expenseslist, 'periodvalue': periodvalue, 'role1': request.session['role1']}) #,{'data': data, 'company': company}
 
 @login_required 
 def testcall(request):
@@ -3314,7 +3367,7 @@ def edit_vtr(request,vtrcheck):
                                             'expenseslist': expenseslist, 'periodvalue': periodvalue,
                                             'helperlist': helperlist, 'expenseslist1': expenseslist1,
                                                 'vtr': vtr, 'vtrdate': vtrdate, 'drivername': drivername,
-                                                'allhelper': allhelper, 'oldperiod': oldperiod }) #,{'data': data, 'company': company}
+                                                'allhelper': allhelper, 'oldperiod': oldperiod, 'role1': request.session['role1'] }) #,{'data': data, 'company': company}
 
 @login_required 
 def delete_vtr(request,vtrno):
@@ -3341,10 +3394,10 @@ def attendance(request):
         cursor.execute(f"SELECT rowid, empno, lname, fname, mname FROM TBL_MASTERFILE WHERE POSITION = '{emptype}' and company = '{company}' and status = 'ACTIVE'")
         emp = cursor.fetchall()
         request.session['emptype'] = emptype        
-        return render(request, 'add_attendance.html',{'emp': emp, 'period': period})
+        return render(request, 'add_attendance.html',{'emp': emp, 'period': period, 'role1': request.session['role1']})
     cursor.execute(f"SELECT * FROM TBL_PAYROLL_PERIOD WHERE employeetype = 'OFFICE STAFF' and company = '{company}' and status = 'ACTIVE'")
     period = cursor.fetchall()
-    return render(request, 'select_attendance.html',{'period': period})
+    return render(request, 'select_attendance.html',{'period': period, 'role1': request.session['role1']})
 
 @login_required
 def closeattendance(request):   
@@ -3352,7 +3405,7 @@ def closeattendance(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_PAYROLL_PERIOD WHERE employeetype = 'OFFICE STAFF' and company = '{company}' and status = 'ACTIVE'")
     period = cursor.fetchall()
-    return render(request, 'select_attendance.html',{'period': period})
+    return render(request, 'select_attendance.html',{'period': period, 'role1': request.session['role1']})
 
 @login_required
 def add_attendance(request):   
@@ -3415,7 +3468,7 @@ def add_attendance(request):
     period = cursor.fetchall()
     cursor.execute(f"SELECT rowid, empno, lname, fname, mname FROM TBL_MASTERFILE WHERE POSITION = '{emptype}' and company = '{company}' and status = 'ACTIVE'")
     emp = cursor.fetchall()
-    return render(request, 'add_attendance.html',{'emp': emp, 'period': period, 'emptype': emptype})
+    return render(request, 'add_attendance.html',{'emp': emp, 'period': period, 'emptype': emptype, 'role1': request.session['role1']})
 
 @login_required
 def deleteattendance(request):
@@ -3498,7 +3551,7 @@ def rate(request):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM TBL_RATE")
     rate = cursor.fetchall()
-    return render(request, 'rate.html',{'rate': rate}) #,{'data': data, 'company': company}
+    return render(request, 'rate.html',{'rate': rate, 'role1': request.session['role1']}) #,{'data': data, 'company': company}
 
 def simulatesummary(request):
     username = request.session['username']
@@ -3681,7 +3734,7 @@ def clear_table(request):
             cursor.execute(f"delete from TBL_VTR where driverempno = {empno}")
             
     
-    return render(request, 'clear_table.html')
+    return render(request, 'clear_table.html',{'role1': request.session['role1']})
 
 @login_required 
 def gov_ded(request):
@@ -3693,7 +3746,7 @@ def gov_ded(request):
     for i in range(1, 13,1):
         month.append(str(i))
     
-    return render(request, 'gov_ded.html',{'month': month, 'year': year})
+    return render(request, 'gov_ded.html',{'month': month, 'year': year, 'role1': request.session['role1']})
 
 @login_required 
 def deduction_reports(request):
@@ -3706,7 +3759,7 @@ def deduction_reports(request):
     month = []
     for i in range(1, 13,1):
         month.append(str(i))
-    return render(request, 'deduction_reports.html',{'month': month, 'year': year, 'dedtype': dedtype})
+    return render(request, 'deduction_reports.html',{'month': month, 'year': year, 'dedtype': dedtype, 'role1': request.session['role1']})
 
 @login_required 
 def payroll_reports(request):
@@ -3717,7 +3770,7 @@ def payroll_reports(request):
     # month = []
     # for i in range(1, 13,1):
     #     month.append(str(i))
-    return render(request, 'payroll_reports.html',{'location': location})
+    return render(request, 'payroll_reports.html',{'location': location, 'role1': request.session['role1']})
 
 @login_required 
 def get_year(request):
@@ -4708,19 +4761,19 @@ def other_reports(request,rowid):
         if rowid == 1:
             cursor.execute(f"Select location from TBL_LOCATION where company = '{company}' order by location")
             location = cursor.fetchall()
-            return render(request, 'reports_1.html',{'location': location})
+            return render(request, 'reports_1.html',{'location': location, 'role1': request.session['role1']})
         if rowid == 2:
             # cursor.execute(f"Select location from TBL_LOCATION where company = '{company}' order by location")
             # location = cursor.fetchall()
-            return render(request, 'reports_2.html')
-    return render(request, 'other_reports.html')
+            return render(request, 'reports_2.html',{ 'role1': request.session['role1']})
+    return render(request, 'other_reports.html',{ 'role1': request.session['role1']})
 
 @login_required   
 def upload_data(request,rowid):
     username = request.session['username']
     company = request.session['company']
     cursor = connection.cursor()
-    return render(request, 'upload_data.html')
+    return render(request, 'upload_data.html',{'role1': request.session['role1']})
 
 @login_required   
 def submit_upload(request,rowid):
@@ -5037,7 +5090,7 @@ def submit_upload(request,rowid):
                 cursor.execute(query,data_values)
             messages.info(request,"Done")
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'upload_data.html')
+    return render(request, 'upload_data.html',{'role1': request.session['role1']})
 
 @login_required   
 def submit_fix(request,rowid):
@@ -5098,4 +5151,4 @@ def submit_fix(request,rowid):
                 cursor.execute(f"Update TBL_FINAL_PAYROLL set empname = '{empname}' where empno = {empno}")
             messages.info(request,"Done fix")
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'fix_data.html')
+    return render(request, 'fix_data.html',{'role1': request.session['role1']})
